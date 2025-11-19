@@ -10,18 +10,25 @@ namespace Airport
             while (loop)
             {
                 var passengers_list = new List<Passenger>
-            {
-                new Passenger("Dina", "Gladan",new DateOnly(2004,02,20), "dina.gladan@gmail.com","pas1!sWord"),
-                new Passenger("Ivan", "Nince",new DateOnly(2004,10,24), "ivan.nince@gmail.com","pas1!sWord"),
-                new Passenger("Marko", "Gelot",new DateOnly(2007,07,14), "marko.gelot@gmail.com","pas1!sWord"),
-            };
+                {
+                    new Passenger("Dina", "Gladan",new DateOnly(2004,02,20), "dina.gladan@gmail.com","pas1!sWord"),
+                    new Passenger("Ivan", "Nince",new DateOnly(2004,10,24), "ivan.nince@gmail.com","pas1!sWord"),
+                    new Passenger("Marko", "Gelot",new DateOnly(2007,07,14), "marko.gelot@gmail.com","pas1!sWord"),
+                };
+
+                var flights_list = new List<Flight>
+                {
+                    new Flight( "Zagreb - London", new DateOnly(2025,12,01), new DateOnly(2025,12,10), 1450, new TimeSpan(2,20,0), 66,20,10 ),
+                    new Flight( "Zagreb - Paris", new DateOnly(2025,12,01), new DateOnly(2025,12,10), 1450, new TimeSpan(2,20,0), 36,4,1 ),
+                    new Flight( "Split - Dubai", new DateOnly(2025,12,01), new DateOnly(2025,12,10), 1450, new TimeSpan(2,20,0), 70,18,10 ),
+                };
 
                 int choice = Helper.Menu("1 - Putnici", "2 - Letovi", "3 – Avioni", "4 – Posada", "5 – Izlaz iz programa");
                 switch (choice)
                 {
                     case 1:
                         Console.Clear();
-                        PassengersChoices(passengers_list);
+                        PassengersChoices(passengers_list, flights_list);
                         Helper.PrintTitle("glavni izbornik");
                         break;
                     case 2:
@@ -46,7 +53,7 @@ namespace Airport
                 }
             }
         }
-        static void PassengersChoices(List<Passenger> passengers)
+        static void PassengersChoices(List<Passenger> passengers, List<Flight> flights_list)
         {
             bool loop = true;
             while (loop)
@@ -76,9 +83,37 @@ namespace Airport
                                 p.printPassenger();
                         }
                         Console.WriteLine();
-                        PassengerHelper.PassengerLogInMenu(logged);
+                        PassengerLogIn(logged, flights_list);
                         break;
                     case 3:
+                        loop = false;
+                        Console.Clear();
+                        break;
+                }
+            }
+        }
+        static void PassengerLogIn(Passenger logged, List<Flight> flights_list)
+        {
+            bool loop = true;
+            while (loop)
+            {
+                var choice = Helper.Menu("1 - Prikaz svih letova", "2 - Odabir leta", "3 - Pretrazivanje letova (po ID-u ili po nazivu)", "4 - Otkazivanje leta", "5 - Povrtaka na prethodni izbornik");
+
+                switch (choice)
+                {
+                    case 1:
+                        Console.Clear();
+                        Helper.PrintTitle("Prikaz svih letova");
+                        Flight.showFlights(flights_list);
+                        Helper.ReadyToContinue();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
                         loop = false;
                         Console.Clear();
                         break;

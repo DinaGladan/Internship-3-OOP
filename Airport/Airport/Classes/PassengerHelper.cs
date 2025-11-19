@@ -138,11 +138,7 @@
             return passenger;
         }
 
-        public static void PassengerLogInMenu(Passenger logged)
-        {
-            
-            Helper.Menu("1 - Prikaz svih letova", "2 - Odabir leta", "3 - Pretrazivanje letova (po ID-u ili po nazivu)", "4 - Otkazivanje leta", "5 - Povrtaka na prethodni izbornik");
-        }
+       
 
     }
 }

@@ -18,7 +18,7 @@
             Password = password;
         }
         public void printPassenger() {
-            Console.WriteLine($"Name: {Name} Surname: {Surname} BirthDate {Birthdate} Email {Email}");
+            Console.WriteLine($"Name: {Name} Surname: {Surname} BirthDate: {Birthdate} Email: {Email}");
         }
         public string get_pas()
         {
