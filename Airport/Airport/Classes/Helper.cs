@@ -13,13 +13,13 @@ namespace Airport.Classes
             int c;
             while (!int.TryParse(Console.ReadLine(), out c) || c < 1 || c > choices.Length)
             {
-                Console.Clear();
                 Console.WriteLine("Unesite zeljeni izbor: ");
             }
             return c;
         }
-        public static void PrintTitle(string t) {
-            Console.WriteLine(t.ToUpper());
+        public static void PrintTitle(params string[] title) {
+            foreach(var t in title)
+                Console.WriteLine(t.ToUpper() + "\n");
         }
         public static string generateID()
         {
@@ -28,10 +28,10 @@ namespace Airport.Classes
         public static string IsItString(string word) {;
             while(true) {
                 
-                if(!int.TryParse(word, out _)){
+                if(!int.TryParse(word, out _) && !string.IsNullOrEmpty(word) && !string.IsNullOrWhiteSpace(word)){
                     break;
                 }
-                Console.WriteLine("Unesite rijec, ne broj ");
+                Console.Write("Unesite rijec ");
                 word = Console.ReadLine();
             }
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
@@ -51,6 +51,12 @@ namespace Airport.Classes
                     Console.Write("Unesite datum rodjenja korisnika (YYYY-MM-DD) ");
                 }
             }
+        }
+        public static void ReadyToContinue()
+        {
+            Console.WriteLine("\nPritisnite enter za nastavak ");
+            while (Console.ReadKey().Key != ConsoleKey.Enter) { }
+            Console.Clear();
         }
     }
 }

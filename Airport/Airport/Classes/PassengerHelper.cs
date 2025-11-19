@@ -52,7 +52,7 @@
                 if (IsValidEmail(email))
                     return email;
 
-                Console.WriteLine("Email nije valjan! Unesite ponovo:");
+                Console.Write("Email nije valjan! Unesite ponovo: ");
             }
         }
 
@@ -62,7 +62,7 @@
             {
                 if (passenger.Email == passenger_email)
                 {
-                    Console.WriteLine("Uneseni email vec postoji ");
+                    Console.WriteLine("Uneseni email vec postoji!");
                     return true;
                 }
             }
@@ -78,35 +78,37 @@
                 if (IsValidPassword(password))
                     return password;
 
-                Console.WriteLine("Email nije valjan! Unesite ponovo:");
+                Console.Write("Password nije valjan! Unesite ponovo: ");
             }
         }
 
 
         public static List<Passenger> PassangerRegistration(List<Passenger> passengers)
-        {
-            Console.WriteLine("Unesite ime novog putnika");
+        {   Console.Clear();
+            Helper.PrintTitle("registracija novog putnika");
+            Console.Write("Unesite ime novog putnika ");
             string passenger_name = Helper.IsItString(Console.ReadLine());
 
-            Console.WriteLine("Unesite prezime novog putnika");
+            Console.Write("Unesite prezime novog putnika ");
             string passenger_surname = Helper.IsItString(Console.ReadLine());
 
-            Console.WriteLine("Unesite datum rodjenja putnika (YYYY-MM-DD)");
+            Console.Write("Unesite datum rodjenja putnika (YYYY-MM-DD) ");
             DateOnly passenger_birth = Helper.IsValidDate();
 
             string passenger_email;
             do
             {
-                Console.WriteLine("Unesite email");
+                Console.Write("Unesite email ");
                 passenger_email = PassengerHelper.GetValidEmail();
             } while (PassengerHelper.EmailExists(passenger_email, passengers));
 
-            Console.WriteLine("Unesite pass (najmanje 8 karaktera, bar 1 veliko slovo, bar 1 broj i bar 1 specijalan znak)");
+            Console.Write("Unesite pass (najmanje 8 karaktera, bar 1 veliko slovo, bar 1 broj i bar 1 specijalan znak) ");
             string passenger_password = PassengerHelper.GetValidPass();
 
             var new_passenger = new Passenger(passenger_name, passenger_surname, passenger_birth, passenger_email, passenger_password);
 
             passengers.Add(new_passenger);
+            Console.Clear();
             return passengers;
         }
     }
