@@ -62,7 +62,7 @@
             {
                 if (passenger.Email == passenger_email)
                 {
-                    Console.WriteLine("Uneseni email vec postoji!");
+                    Console.WriteLine("Uneseni email postoji!");
                     return true;
                 }
             }
@@ -111,5 +111,38 @@
             Console.Clear();
             return passengers;
         }
+
+        public static Passenger PassengerLogIn(List<Passenger> passengers)
+        {
+            Console.Clear();
+            Helper.PrintTitle("prijava postojeceg putnika");
+            Console.Write("Unesite email ");
+
+            string passenger_email;
+            passenger_email = PassengerHelper.GetValidEmail();
+            if (!PassengerHelper.EmailExists(passenger_email, passengers))
+            {
+                Console.WriteLine("Uneseni email ne postoji ");
+                Helper.ReadyToContinue();
+                return null;
+            }
+
+            var passenger = passengers.First(p=>p.Email == passenger_email);
+            string passenger_password;
+            do
+            {
+                Console.Write("Unesite ispravan password ");
+                passenger_password = PassengerHelper.GetValidPass();
+
+            } while (passenger.get_pas() != passenger_password);
+            return passenger;
+        }
+
+        public static void PassengerLogInMenu(Passenger logged)
+        {
+            
+            Helper.Menu("1 - Prikaz svih letova", "2 - Odabir leta", "3 - Pretrazivanje letova (po ID-u ili po nazivu)", "4 - Otkazivanje leta", "5 - Povrtaka na prethodni izbornik");
+        }
+
     }
 }

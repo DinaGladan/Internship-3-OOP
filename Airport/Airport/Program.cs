@@ -64,6 +64,19 @@ namespace Airport
 
                         break;
                     case 2:
+                        Passenger? logged = null;
+                        while (logged ==null) {
+                            logged = PassengerHelper.PassengerLogIn(passengers);
+                        }
+                        Console.Clear();
+                        Console.WriteLine("Prijavljeni ste kao: ");
+                        foreach (Passenger p in passengers)
+                        {
+                            if (p == logged)
+                                p.printPassenger();
+                        }
+                        Console.WriteLine();
+                        PassengerHelper.PassengerLogInMenu(logged);
                         break;
                     case 3:
                         loop = false;
