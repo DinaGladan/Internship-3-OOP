@@ -58,5 +58,32 @@ namespace Airport.Classes
             while (Console.ReadKey().Key != ConsoleKey.Enter) { }
             Console.Clear();
         }
+
+        public static Flight findById(List<Flight> flights)
+        {
+            while (true)
+            {
+                Console.Write("Unesite jedan od ponudjenih IDieva: ");
+                string wanted_id = Console.ReadLine();
+                foreach (Flight flight in flights)
+                {
+                    if (flight.getID() == wanted_id)
+                    {
+                        return flight;
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public static char IsItChar(List<char> possible_char)
+        {   
+            char c;
+            while(!char.TryParse(Console.ReadLine().Trim().ToLower(), out c) || !possible_char.Contains(c))
+            {
+                Console.WriteLine("Potrebno je unijeti " + string.Join(",", possible_char).ToUpper());
+            }
+            return c;
+        }
     }
 }

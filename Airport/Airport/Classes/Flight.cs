@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Airport.Classes
 {
-    internal class Flight
+    public class Flight
     {
         private string Id {  get; set; }
         public string Name { get; set; }
@@ -32,6 +32,10 @@ namespace Airport.Classes
             VIPSeats = vipSeats;
         }
 
+        public string getID()
+        {
+            return Id;
+        }
         public static void showFlights(List<Flight> flights)
         {
             foreach(Flight flight in flights)
@@ -40,13 +44,8 @@ namespace Airport.Classes
             }
         }
 
-        public static void showAvaibleFlights(List<Flight> flights)
-        {
-            foreach (Flight flight in flights)
-            {   if(flight.StandardSeats > 0 || flight.BusinessSeats > 0 || flight.VIPSeats > 0)
-                Console.WriteLine($"{flight.Id} - {flight.Name} - {flight.DepartureDate} - {flight.ArrivalDate} - {flight.Distance} - {flight.TimeTravel} ");
-            }
-        }
+        
+
     }
 
     

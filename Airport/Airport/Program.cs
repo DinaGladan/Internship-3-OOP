@@ -108,6 +108,16 @@ namespace Airport
                         Helper.ReadyToContinue();
                         break;
                     case 2:
+                        Console.Clear();
+                        Helper.PrintTitle("Odabir leta od dostupnih");
+                        var available_flights = FlightHelper.showAvailableFlights(flights_list);
+                        var wanted_flight = FlightHelper.chooseFromAvailableFlights(available_flights);
+                        var wanted_seat = FlightHelper.chooseAvailableSeat(wanted_flight);
+                        Ticket new_ticket = new Ticket(logged, wanted_flight, wanted_seat);
+                        logged.PassengerTickets.Add(new_ticket);
+                        Console.Clear(); 
+                        logged.printTickets(); //dodat da se smanji za jedan poslije odabira sjedala i da se ne moze vec odabrani let opet uzet?
+                        Helper.ReadyToContinue();
                         break;
                     case 3:
                         break;
