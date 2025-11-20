@@ -272,7 +272,10 @@ namespace Airport
                         Helper.ReadyToContinue();
                         break;
                     case 3:
-                        
+                        Console.Clear();
+                        Helper.PrintTitle("Dodavanje novog osoblja");
+                        CrewHelper.AddStaff(pilots, copilots, stewardesses);
+                        Helper.ReadyToContinue();
                         break;
                     case 4:
                         loop = false;
