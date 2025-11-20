@@ -76,13 +76,7 @@ namespace Airport
                             logged = PassengerHelper.PassengerLogIn(passengers);
                         }
                         Console.Clear();
-                        Console.WriteLine("Prijavljeni ste kao: ");
-                        foreach (Passenger p in passengers)
-                        {
-                            if (p == logged)
-                                p.printPassenger();
-                        }
-                        Console.WriteLine();
+                        
                         PassengerLogIn(logged, flights_list);
                         break;
                     case 3:
@@ -97,8 +91,10 @@ namespace Airport
             bool loop = true;
             while (loop)
             {
+                Console.WriteLine("Prijavljeni ste kao: ");
+                logged.printPassenger();
+                Console.WriteLine();
                 var choice = Helper.Menu("1 - Prikaz svih letova", "2 - Odabir leta", "3 - Pretrazivanje letova (po ID-u ili po nazivu)", "4 - Otkazivanje leta", "5 - Povrtaka na prethodni izbornik");
-
                 switch (choice)
                 {
                     case 1:
@@ -121,10 +117,16 @@ namespace Airport
                         break;
                     case 3:
                         Console.Clear();
+                        Helper.PrintTitle("Pretrazivanje letova");
                         FlightHelper.searchFlight(flights_list);
                         Helper.ReadyToContinue();
                         break;
                     case 4:
+                        Console.Clear();
+                        Helper.PrintTitle("Otkazivanje letova");
+                        logged.printTickets();
+                        logged.cancelTicket(flights_list);
+                        Helper.ReadyToContinue();
                         break;
                     case 5:
                         loop = false;
