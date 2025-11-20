@@ -106,5 +106,26 @@
                     break;
             }
         }
+
+        public static Flight CreateNewFlight()
+        {
+            Console.Write("Unesite naziv novog leta ");
+            string name = Console.ReadLine();
+            Helper.IsItString(name);
+
+            Console.Write("Unesite datum polaska novog leta ");
+            DateOnly departure_day = Helper.IsValidDate();
+
+            Console.Write("Unesite datum dolaska novog leta ");
+            DateOnly arrival_day = Helper.IsValidDate();
+
+            Console.Write("Unesite udaljenost novog leta u kilometrima ");
+            double distance = Helper.IsItDouble();
+           
+            Console.Write("Unesite trajanje leta. Unosite sate i minute (sekunde nisu obvezne):");
+            TimeSpan travel_time = Helper.IsItTimeSpan();
+
+            return new Flight(name, departure_day, arrival_day, distance, travel_time);
+        }
     }
 }

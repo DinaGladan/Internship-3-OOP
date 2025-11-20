@@ -33,7 +33,7 @@ namespace Airport
                         break;
                     case 2:
                         Console.Clear();
-                        Console.WriteLine("Odabrali ste Letove");
+                        FlightsChoices(flights_list);
                         Helper.PrintTitle("glavni izbornik");
                         break;
                     case 3:
@@ -99,7 +99,7 @@ namespace Airport
                 {
                     case 1:
                         Console.Clear();
-                        Helper.PrintTitle("Prikaz svih letova");
+                        Helper.PrintTitle("Prikaz svih letova"); //mozda treba samo od tog putnika??
                         Flight.showFlights(flights_list);
                         Helper.ReadyToContinue();
                         break;
@@ -134,6 +134,46 @@ namespace Airport
                         break;
                 }
             }
+        }
+
+        static void FlightsChoices(List<Flight> flights)
+        {
+            bool loop = true;
+            while(loop)
+            {
+                Helper.PrintTitle("letovi");
+                int choice_f = Helper.Menu("1 - Prikaz svih letova", "2 - Dodavanje novog leta", "3 - Pretrazivanje leta", "4 - Uredjivanje letova" , "5 - Brisanje leta", "6 - Povratak na prethodni izbornik");
+                switch (choice_f)
+                {
+                    case 1:
+                        Console.Clear();
+                        Helper.PrintTitle("Prikaz svih letova"); 
+                        Flight.showFlights(flights);
+                        Helper.ReadyToContinue();
+                        break;
+                    case 2:
+                        Console.Clear();
+                        Helper.PrintTitle("Dodavanje novog leta");
+                        Flight new_flight = FlightHelper.CreateNewFlight();
+                        flights.Add(new_flight);
+                        break;
+                    case 3:
+                        Console.Clear();
+                        Helper.PrintTitle("Pretrazivanje leta");
+                        FlightHelper.searchFlight(flights);
+                        Helper.ReadyToContinue();
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        loop = false;
+                        Console.Clear();
+                        break;
+                }
+            }
+
         }
     }
 }

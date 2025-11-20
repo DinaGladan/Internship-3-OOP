@@ -48,7 +48,7 @@ namespace Airport.Classes
                     return bd;
                 else {
                     Console.WriteLine("Niste unijeli datum u ispravnom formatu ili ste unijeli previsoku godinu ");
-                    Console.Write("Unesite datum rodjenja korisnika (YYYY-MM-DD) ");
+                    Console.Write("Unesite datum (YYYY-MM-DD) ");
                 }
             }
         }
@@ -69,6 +69,38 @@ namespace Airport.Classes
                 Console.WriteLine("Potrebno je unijeti " + string.Join(",", possible_char).ToUpper());
             }
             return c;
+        }
+
+        public static double IsItDouble()
+        {
+            double number;
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (double.TryParse(input, out number) && number >0)
+                    return number;
+                else
+                {
+                    Console.WriteLine("Niste unijeli broj ");
+                    Console.Write("Unesite broj ");
+                }
+            }
+        }
+
+        public static TimeSpan IsItTimeSpan()
+        {
+            TimeSpan time;
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (TimeSpan.TryParse(input, out time) && time > TimeSpan.Zero)
+                    return time;
+                else
+                {
+                    Console.WriteLine("Niste unijeli u ispravnom formatu ");
+                    Console.Write("Unesite vrijeme trajanja (hh:mm): ");
+                }
+            }
         }
     }
 }
