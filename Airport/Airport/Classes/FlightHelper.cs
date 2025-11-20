@@ -1,4 +1,5 @@
-﻿namespace Airport.Classes
+﻿
+namespace Airport.Classes
 {
     public class FlightHelper
     {
@@ -107,7 +108,7 @@
             }
         }
 
-        public static Flight CreateNewFlight()
+        public static Flight CreateNewFlight(List<Crew> crew_list) // dodat avion
         {
             Console.Write("Unesite naziv novog leta ");
             string name = Console.ReadLine();
@@ -124,11 +125,19 @@
            
             Console.Write("Unesite trajanje leta. Unosite sate i minute (sekunde nisu obvezne):");
             TimeSpan travel_time = Helper.IsItTimeSpan();
+            Crew flight_crew;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Unesite zeljenu posadu novog leta (izaberite od postojecih):");
+                flight_crew = WantedFlightCrew(crew_list);
+            }
+            while (flight_crew == null);
 
-            return new Flight(name, departure_day, arrival_day, distance, travel_time);
+            return new Flight(name, departure_day, arrival_day, distance, travel_time, flight_crew);
         }
 
-        public static void editFlight(List<Flight> flights)
+        public static void editFlight(List<Flight> flights, List<Crew>crews)
         {
             var edit_flight = findById(flights);
 
@@ -153,10 +162,43 @@
                     edit_flight.changeArrivalDate(arrival_day_edit);
                     break;
                 case 'c':
+                    Console.WriteLine("Posada vaseg leta: ");
+                    Crew crew_to_edit = edit_flight.FlightCrew;
+                    crew_to_edit.showCrew();
+                    Helper.ReadyToContinue();
+                    Crew new_crew = Crew.changeCrew(crew_to_edit, crews, flights);
+                    edit_flight.FlightCrew = new_crew;;
                     break;
             }
             Console.WriteLine("Vas let poslije uredjivaanja: ");
-            edit_flight.printFlight();;
+            edit_flight.printFlight();
+            edit_flight.FlightCrew.showCrew();
         }
+        public static Crew WantedFlightCrew(List<Crew> crew_list)
+        {
+            foreach (var crew in crew_list)
+            {
+                crew.showCrew();
+            }
+            string wanted = Console.ReadLine();
+            wanted = Helper.IsItString(wanted);
+            foreach (var crew in crew_list)
+            {
+                if (crew.CrewName == wanted)
+                {
+                    Crew wanted_crew = crew;
+                    return wanted_crew;
+                }
+            }
+            return null;
+
+        }
+        public static List<Crew> GetFreeCrews(List<Crew> allCrews, List<Flight> allFlights)
+        {
+            return allCrews
+                .Where(crew => allFlights.All(flight => flight.FlightCrew != crew))
+                .ToList();
+        }
+
     }
 }

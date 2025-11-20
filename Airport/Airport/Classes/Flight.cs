@@ -8,12 +8,13 @@
         public DateOnly ArrivalDate { get; set; }
         public double Distance { get; set; }
         public TimeSpan TimeTravel { get; set; }
+        public Crew FlightCrew {  get; set; }
 
         public int StandardSeats { get; set; }
         public int BusinessSeats { get; set; }
         public int VIPSeats {  get; set; }
 
-        public Flight(string name, DateOnly departureDay, DateOnly arrivalDate, double distance, TimeSpan timeTravel, int standardSeats = 70, int businessSeats = 20, int vipSeats = 10)
+        public Flight(string name, DateOnly departureDay, DateOnly arrivalDate, double distance, TimeSpan timeTravel, Crew flightCrew, int standardSeats = 70, int businessSeats = 20, int vipSeats = 10)
         {
             Id = Helper.generateID();
             Name = name;
@@ -21,6 +22,7 @@
             ArrivalDate = arrivalDate;
             Distance = distance;
             TimeTravel = timeTravel;
+            FlightCrew = flightCrew;
             StandardSeats = standardSeats;
             BusinessSeats = businessSeats;
             VIPSeats = vipSeats;
