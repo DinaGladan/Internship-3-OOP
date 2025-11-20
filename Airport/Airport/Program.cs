@@ -1,5 +1,6 @@
 ﻿using Airport.Classes;  //samostalno dodat
 using Airport.Classes.Members;
+using System.Collections.Generic;
 namespace Airport
 {
     internal class Program
@@ -9,7 +10,34 @@ namespace Airport
             Helper.PrintTitle("glavni izbornik");
             bool loop = true;
             while (loop)
-            {
+            {   
+                var pilots = new List<Pilot>() { 
+                    new Pilot("Linda", "Klamar","zensko",new DateOnly(2004,02,20)),
+                    new Pilot("Tani", "Klamar","zensko",new DateOnly(2004,02,20)),
+                    new Pilot("Valent", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new Pilot("Vedran", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new Pilot("Irena", "Klamar","zensko",new DateOnly(2004,02,20)),
+                };
+                var copilots = new List<CoPilot>() {
+                    new CoPilot("Fani", "Flamar","zensko",new DateOnly(2004,02,20)),
+                    new CoPilot("Rahela", "Klamar","zensko",new DateOnly(2004,02,20)),
+                    new CoPilot("Marko", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new CoPilot("Šime", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new CoPilot("Ivica", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new CoPilot("Mislav", "Klamar","musko",new DateOnly(2004,02,20)),
+                };
+                var stewardesses = new List<Stewardess>() {
+                    new Stewardess("Chiara", "Klamar","zensko",new DateOnly(2004,02,20)),
+                    new Stewardess("Klara", "Klamar","zensko",new DateOnly(2004,02,20)),
+                    new Stewardess("Karlo", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new Stewardess("Miso", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new Stewardess("Silvio", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new Stewardess("Alen", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new Stewardess("Mihael", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new Stewardess("Luka", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new Stewardess("Mirko", "Klamar","musko",new DateOnly(2004,02,20)),
+                    new Stewardess("Bepo", "Klamar","musko",new DateOnly(2004,02,20)),
+                };
                 var passengers_list = new List<Passenger>
                 {
                     new Passenger("Dina", "Gladan",new DateOnly(2004,02,20), "dina.gladan@gmail.com","pas1!sWord"),
@@ -20,28 +48,28 @@ namespace Airport
                 var crew_list = new List<Crew>
                 {
                     new Crew("Posada1",new List<CrewMember>{
-                        new Pilot("Linda", "Klamar","zensko",new DateOnly(2004,02,20)),
-                        new CoPilot("Fani", "Flamar","zensko",new DateOnly(2004,02,20)),
-                        new Stewardess("Miro", "Blamar","musko",new DateOnly(2004,02,20)),
-                        new Stewardess("Mirna", "Blamar","zensko",new DateOnly(2004,02,20)),
+                        pilots[0],
+                        copilots[0],
+                        stewardesses[0],
+                        stewardesses[1],
                     } ),
                     new Crew("Posada2",new List<CrewMember>{
-                        new Pilot("Linda", "Klamar","zensko",new DateOnly(2004,02,20)),
-                        new CoPilot("Fani", "Flamar","zensko",new DateOnly(2004,02,20)),
-                        new Stewardess("Miro", "Blamar","musko",new DateOnly(2004,02,20)),
-                        new Stewardess("Mirko", "Blamar","musko",new DateOnly(2004,02,20)),
+                        pilots[1],
+                        copilots[1],
+                        stewardesses[2],
+                        stewardesses[3],
                     } ),
                     new Crew("Posada3",new List<CrewMember>{
-                        new Pilot("Linda", "Klamar","zensko",new DateOnly(2004,02,20)),
-                        new CoPilot("Fani", "Flamar","zensko",new DateOnly(2004,02,20)),
-                        new Stewardess("Miro", "Blamar","musko",new DateOnly(2004,02,20)),
-                        new Stewardess("Mirela", "Blamar","zensko",new DateOnly(2004,02,20)),
+                        pilots[2],
+                        copilots[2],
+                        stewardesses[4],
+                        stewardesses[5],
                     } ),
                     new Crew("Posada4",new List<CrewMember>{
-                        new Pilot("L", "Klamar","zensko",new DateOnly(2004,02,20)),
-                        new CoPilot("F", "Flamar","zensko",new DateOnly(2004,02,20)),
-                        new Stewardess("M", "Blamar","musko",new DateOnly(2004,02,20)),
-                        new Stewardess("M", "Blamar","musko",new DateOnly(2004,02,20)),
+                        pilots[3],
+                        copilots[3],
+                        stewardesses[6],
+                        stewardesses[7],
                     } ),
                 };
 
@@ -72,7 +100,7 @@ namespace Airport
                         break;
                     case 4:
                         Console.Clear();
-                        CrewChoice(crew_list);
+                        CrewChoice(pilots, copilots, stewardesses, crew_list);
                         Console.WriteLine("Odabrali ste Posadu");
                         Helper.PrintTitle("glavni izbornik");
                         break;
@@ -218,7 +246,7 @@ namespace Airport
             }
 
         }
-        static void CrewChoice( List<Crew> crew_list )
+        static void CrewChoice(List<Pilot> pilots, List<CoPilot> copilots, List<Stewardess> stewardesses, List<Crew> crew_list)
         {
             bool loop = true;
             while (loop)
@@ -237,7 +265,11 @@ namespace Airport
                         Helper.ReadyToContinue();
                         break;
                     case 2:
-                        
+                        Console.Clear();
+                        Helper.PrintTitle("Kreiranje nove posade");
+                        var new_crew = Crew.createNewCrew(pilots, copilots, stewardesses, crew_list);
+                        crew_list.Add(new_crew);
+                        Helper.ReadyToContinue();
                         break;
                     case 3:
                         
