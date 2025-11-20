@@ -2,6 +2,7 @@
 {
     public abstract class CrewMember
     {
+        private string Id { get; set; }
         public string Name { get; set; }    
         public string Surname { get; set;}
         public abstract string Position { get;}
@@ -10,6 +11,7 @@
 
         public CrewMember(string name, string surname, string gender, DateOnly birthDate)
         {
+            Id = Helper.generateID();
             Name = name;
             Surname = surname;
             Gender = gender;
@@ -17,7 +19,11 @@
         }
         public void printMember()
         {
-            Console.WriteLine($"{Name} - {Surname} - {Position} - {Gender} - {BirthDate}");
+            Console.WriteLine($"{Id} - {Name} - {Surname} - {Position} - {Gender} - {BirthDate}");
+        }
+        public string getId()
+        {
+            return Id;
         }
     }
 }

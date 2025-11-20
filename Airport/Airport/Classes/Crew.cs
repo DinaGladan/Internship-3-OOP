@@ -1,4 +1,5 @@
-﻿namespace Airport.Classes
+﻿using Airport.Classes.Members;
+namespace Airport.Classes
 {
     public class Crew
     {
@@ -33,6 +34,56 @@
             }
             while (new_crew == null);
             return new_crew;
+        }
+
+        public static Crew createNewCrew(List<Pilot> pilots, List<CoPilot> copilots, List<Stewardess> stewardesses, List<Crew> crews)
+        {
+            Console.Write("Unesite naziv nove posade ");
+            string crew_name = Console.ReadLine();
+            Helper.IsItString(crew_name);
+
+            var members = new List<CrewMember>();
+            var free_pilots = CrewHelper.GetFreePilots(crews, pilots);
+            Pilot new_pilot;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Unesite ID zeljenog pilota (izaberite od mogucih): ");
+                new_pilot = CrewHelper.WantedPilot(free_pilots);
+            } while (new_pilot == null);
+            members.Add(new_pilot);
+
+            var free_coPilots = CrewHelper.GetFreeCoPilots(crews, copilots);
+            CoPilot new_coPilot;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Unesite ID zeljenog kopilota (izaberite od mogucih): ");
+                new_coPilot = CrewHelper.WantedCoPilot(free_coPilots);
+            } while (new_coPilot == null);
+            members.Add(new_coPilot);
+
+            var free_stews = CrewHelper.GetFreeStewardesses(crews, stewardesses);
+            Stewardess new_stew_first;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Unesite ID za prvu stjuardesu (izaberite od mogucih): ");
+                new_stew_first = CrewHelper.WantedStewardess(free_stews);
+            } while (new_stew_first == null);
+            members.Add(new_stew_first);
+            free_stews.Remove(new_stew_first);
+
+            Stewardess new_stew_second;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Unesite ID za drugu stjuardesu (izaberite od mogucih): ");
+                new_stew_second = CrewHelper.WantedStewardess(free_stews);
+            } while (new_stew_second == null);
+
+            members.Add(new_stew_second);
+            return new Crew(crew_name, members);
         }
     }
 

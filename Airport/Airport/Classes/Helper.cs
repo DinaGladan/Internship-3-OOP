@@ -117,5 +117,22 @@ namespace Airport.Classes
                 }
             }
         }
+
+        public static string IsGender(string word)
+        {
+            ;
+            while (true)
+            {
+
+                if (!int.TryParse(word, out _) && !string.IsNullOrEmpty(word) && !string.IsNullOrWhiteSpace(word) && (word =="musko" || word == "zensko"))
+                {
+                    break;
+                }
+                Console.Write("Unesite rijec (musko ili zensko): ");
+                word = Console.ReadLine();
+            }
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            return textInfo.ToTitleCase(word);
+        }
     }
 }
