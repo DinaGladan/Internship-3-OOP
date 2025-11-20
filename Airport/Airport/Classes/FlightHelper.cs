@@ -1,4 +1,5 @@
-﻿namespace Airport.Classes
+﻿
+namespace Airport.Classes
 {
     public class FlightHelper
     {
@@ -105,6 +106,120 @@
                     Flight.showFlights(wanted_flights);
                     break;
             }
+        }
+
+        public static Flight CreateNewFlight(List<Crew> crew_list) // dodat avion
+        {
+            Console.Write("Unesite naziv novog leta ");
+            string name = Console.ReadLine();
+            Helper.IsItString(name);
+
+            Console.Write("Unesite datum polaska novog leta ");
+            DateTime departure_day = Helper.IsValidDate();
+
+            Console.Write("Unesite datum dolaska novog leta ");
+            DateTime arrival_day = Helper.IsValidDate();
+
+            Console.Write("Unesite udaljenost novog leta u kilometrima ");
+            double distance = Helper.IsItDouble();
+           
+            Console.Write("Unesite trajanje leta. Unosite sate i minute (sekunde nisu obvezne):");
+            TimeSpan travel_time = Helper.IsItTimeSpan();
+            Crew flight_crew;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Unesite zeljenu posadu novog leta (izaberite od postojecih):");
+                flight_crew = WantedFlightCrew(crew_list);
+            }
+            while (flight_crew == null);
+
+            return new Flight(name, departure_day, arrival_day, distance, travel_time, flight_crew);
+        }
+
+        public static void editFlight(List<Flight> flights, List<Crew>crews)
+        {
+            var edit_flight = findById(flights);
+
+            Console.Clear();
+            Console.WriteLine("Uredjujemo let : ");
+            edit_flight.printFlight();
+            Console.WriteLine("\n");
+
+            Console.WriteLine("Unesite izbor sto zelite urediti: \na) Vrijeme polaska \nb) Vrijeme dolaska \nc) Posadu");
+            var possible_choices = new List<char>() { 'a', 'b', 'c' };
+            var choice = Helper.IsItChar(possible_choices);
+            switch (choice)
+            {
+                case 'a':
+                    Console.Write("Unesite novi datum polaska leta ");
+                    DateTime departure_day_edit = Helper.IsValidDate();
+                    edit_flight.changeDepartureDate(departure_day_edit);
+                    break;
+                case 'b':
+                    Console.Write("Unesite novi datum dolaska leta ");
+                    DateTime arrival_day_edit = Helper.IsValidDate();
+                    edit_flight.changeArrivalDate(arrival_day_edit);
+                    break;
+                case 'c':
+                    Console.WriteLine("Posada vaseg leta: ");
+                    Crew crew_to_edit = edit_flight.FlightCrew;
+                    crew_to_edit.showCrew();
+                    Helper.ReadyToContinue();
+                    Crew new_crew = Crew.changeCrew(crew_to_edit, crews, flights);
+                    edit_flight.FlightCrew = new_crew;;
+                    break;
+            }
+            Console.WriteLine("Vas let poslije uredjivaanja: ");
+            edit_flight.printFlight();
+            edit_flight.FlightCrew.showCrew();
+        }
+
+        public static void deleteFlight(List<Flight> flights)
+        {
+            var delete_flight = findById(flights);
+            while (unsatisfied_conditions(delete_flight))
+            {
+                delete_flight = findById(flights);
+            }
+            flights.Remove(delete_flight);
+        }
+        public static Crew WantedFlightCrew(List<Crew> crew_list)
+        {
+            foreach (var crew in crew_list)
+            {
+                crew.showCrew();
+            }
+            string wanted = Console.ReadLine();
+            wanted = Helper.IsItString(wanted);
+            foreach (var crew in crew_list)
+            {
+                if (crew.CrewName == wanted)
+                {
+                    Crew wanted_crew = crew;
+                    return wanted_crew;
+                }
+            }
+            return null;
+
+        }
+        public static List<Crew> GetFreeCrews(List<Crew> allCrews, List<Flight> allFlights)
+        {
+            return allCrews
+                .Where(crew => allFlights.All(flight => flight.FlightCrew != crew))
+                .ToList();
+        }
+
+        public static bool unsatisfied_conditions(Flight delete_f)
+        {
+            int max_seats = 100;
+            var sum_seats = delete_f.BusinessSeats + delete_f.StandardSeats + delete_f.VIPSeats;
+            if ((double)sum_seats / max_seats < 0.5)
+                return false;
+            var houers = (delete_f.DepartureDate - DateTime.Now).TotalHours;
+            if (houers >24)
+                return false;
+            return true;
         }
     }
 }

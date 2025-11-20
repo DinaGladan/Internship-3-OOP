@@ -1,4 +1,5 @@
 ﻿using Airport.Classes;  //samostalno dodat
+using Airport.Classes.Members;
 namespace Airport
 {
     internal class Program
@@ -16,11 +17,39 @@ namespace Airport
                     new Passenger("Marko", "Gelot",new DateOnly(2007,07,14), "marko.gelot@gmail.com","pas1!sWord"),
                 };
 
+                var crew_list = new List<Crew>
+                {
+                    new Crew("Posada1",new List<CrewMember>{
+                        new Pilot("Linda", "Klamar","zensko",new DateOnly(2004,02,20)),
+                        new CoPilot("Fani", "Flamar","zensko",new DateOnly(2004,02,20)),
+                        new Stewardess("Miro", "Blamar","musko",new DateOnly(2004,02,20)),
+                        new Stewardess("Mirna", "Blamar","zensko",new DateOnly(2004,02,20)),
+                    } ),
+                    new Crew("Posada2",new List<CrewMember>{
+                        new Pilot("Linda", "Klamar","zensko",new DateOnly(2004,02,20)),
+                        new CoPilot("Fani", "Flamar","zensko",new DateOnly(2004,02,20)),
+                        new Stewardess("Miro", "Blamar","musko",new DateOnly(2004,02,20)),
+                        new Stewardess("Mirko", "Blamar","musko",new DateOnly(2004,02,20)),
+                    } ),
+                    new Crew("Posada3",new List<CrewMember>{
+                        new Pilot("Linda", "Klamar","zensko",new DateOnly(2004,02,20)),
+                        new CoPilot("Fani", "Flamar","zensko",new DateOnly(2004,02,20)),
+                        new Stewardess("Miro", "Blamar","musko",new DateOnly(2004,02,20)),
+                        new Stewardess("Mirela", "Blamar","zensko",new DateOnly(2004,02,20)),
+                    } ),
+                    new Crew("Posada4",new List<CrewMember>{
+                        new Pilot("L", "Klamar","zensko",new DateOnly(2004,02,20)),
+                        new CoPilot("F", "Flamar","zensko",new DateOnly(2004,02,20)),
+                        new Stewardess("M", "Blamar","musko",new DateOnly(2004,02,20)),
+                        new Stewardess("M", "Blamar","musko",new DateOnly(2004,02,20)),
+                    } ),
+                };
+
                 var flights_list = new List<Flight>
                 {
-                    new Flight( "Zagreb - London", new DateOnly(2025,12,01), new DateOnly(2025,12,10), 1450, new TimeSpan(2,20,0), 66,20,10 ),
-                    new Flight( "Zagreb - Paris", new DateOnly(2025,12,01), new DateOnly(2025,12,10), 1450, new TimeSpan(2,20,0), 36,4,1 ),
-                    new Flight( "Split - Dubai", new DateOnly(2025,12,01), new DateOnly(2025,12,10), 1450, new TimeSpan(2,20,0), 70,18,10 ),
+                    new Flight( "Zagreb - London", new DateTime(2025,11,21,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[0],66,20,10 ),
+                    new Flight( "Zagreb - Paris", new DateTime(2025,11,22,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[1],70,4,1 ),
+                    new Flight( "Split - Dubai", new DateTime(2025,11,21,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[2],70,18,10 ),
                 };
 
                 int choice = Helper.Menu("1 - Putnici", "2 - Letovi", "3 – Avioni", "4 – Posada", "5 – Izlaz iz programa");
@@ -33,7 +62,7 @@ namespace Airport
                         break;
                     case 2:
                         Console.Clear();
-                        Console.WriteLine("Odabrali ste Letove");
+                        FlightsChoices(flights_list, crew_list);
                         Helper.PrintTitle("glavni izbornik");
                         break;
                     case 3:
@@ -43,6 +72,7 @@ namespace Airport
                         break;
                     case 4:
                         Console.Clear();
+                        CrewChoice(crew_list);
                         Console.WriteLine("Odabrali ste Posadu");
                         Helper.PrintTitle("glavni izbornik");
                         break;
@@ -99,7 +129,7 @@ namespace Airport
                 {
                     case 1:
                         Console.Clear();
-                        Helper.PrintTitle("Prikaz svih letova");
+                        Helper.PrintTitle("Prikaz svih letova"); //mozda treba samo od tog putnika??
                         Flight.showFlights(flights_list);
                         Helper.ReadyToContinue();
                         break;
@@ -132,6 +162,91 @@ namespace Airport
                         loop = false;
                         Console.Clear();
                         break;
+                }
+            }
+        }
+
+        static void FlightsChoices(List<Flight> flights, List<Crew>crews)
+        {
+            bool loop = true;
+            while(loop)
+            {
+                Helper.PrintTitle("letovi");
+                int choice_f = Helper.Menu("1 - Prikaz svih letova", "2 - Dodavanje novog leta", "3 - Pretrazivanje leta", "4 - Uredjivanje letova" , "5 - Brisanje leta", "6 - Povratak na prethodni izbornik");
+                switch (choice_f)
+                {
+                    case 1:
+                        Console.Clear();
+                        Helper.PrintTitle("Prikaz svih letova"); 
+                        Flight.showFlights(flights);
+                        Helper.ReadyToContinue();
+                        break;
+                    case 2:
+                        Console.Clear();
+                        Helper.PrintTitle("Dodavanje novog leta");
+                        Flight new_flight = FlightHelper.CreateNewFlight(crews);
+                        flights.Add(new_flight);
+                        Helper.ReadyToContinue();
+                        break;
+                    case 3:
+                        Console.Clear();
+                        Helper.PrintTitle("Pretrazivanje leta");
+                        FlightHelper.searchFlight(flights);
+                        Helper.ReadyToContinue();
+                        break;
+                    case 4:
+                        Console.Clear();
+                        Helper.PrintTitle("Uredjivanje letova");
+                        Console.WriteLine("Prikaz postojecih letova: "); 
+                        Flight.showFlights(flights);
+                        FlightHelper.editFlight(flights, crews);
+                        Helper.ReadyToContinue();
+                        break;
+                    case 5:
+                        Console.Clear();
+                        Helper.PrintTitle("Brisanje letova");
+                        Console.WriteLine("Prikaz postojecih letova: ");
+                        Flight.showFlights(flights);
+                        FlightHelper.deleteFlight(flights);
+                        Helper.ReadyToContinue();
+                        break;
+                    case 6:
+                        loop = false;
+                        Console.Clear();
+                        break;
+                }
+            }
+
+        }
+        static void CrewChoice( List<Crew> crew_list )
+        {
+            bool loop = true;
+            while (loop)
+            {
+                Helper.PrintTitle("posada");
+                int choice_f = Helper.Menu("1 - Prikaz svih posada", "2 - Kreiranje nove posade", "3 - Dodavanje novog osoblja", "4 - Povratak na prethodni izbornik");
+                switch (choice_f)
+                {
+                    case 1:
+                        Console.Clear();
+                        Helper.PrintTitle("Prikaz svih posada");
+                        foreach(var crew in crew_list)
+                        {
+                            crew.showCrew();
+                        }
+                        Helper.ReadyToContinue();
+                        break;
+                    case 2:
+                        
+                        break;
+                    case 3:
+                        
+                        break;
+                    case 4:
+                        loop = false;
+                        Console.Clear();
+                        break;
+                    
                 }
             }
         }
