@@ -38,7 +38,7 @@ namespace Airport.Classes
             return textInfo.ToTitleCase(word);
         }
 
-        public static DateOnly IsValidDate()
+        public static DateOnly IsValidBirthDate()
         {
             DateOnly bd;
             while (true)
@@ -47,6 +47,21 @@ namespace Airport.Classes
                 if (DateOnly.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out bd) && bd < DateOnly.FromDateTime( DateTime.Now))
                     return bd;
                 else {
+                    Console.WriteLine("Niste unijeli datum u ispravnom formatu ili ste unijeli previsoku godinu ");
+                    Console.Write("Unesite datum (YYYY-MM-DD) ");
+                }
+            }
+        }
+        public static DateOnly IsValidDate()
+        {
+            DateOnly bd;
+            while (true)
+            {
+                string date = Console.ReadLine();
+                if (DateOnly.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out bd) && bd > DateOnly.FromDateTime(DateTime.Now))
+                    return bd;
+                else
+                {
                     Console.WriteLine("Niste unijeli datum u ispravnom formatu ili ste unijeli previsoku godinu ");
                     Console.Write("Unesite datum (YYYY-MM-DD) ");
                 }

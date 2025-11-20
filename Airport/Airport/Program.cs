@@ -164,6 +164,11 @@ namespace Airport
                         Helper.ReadyToContinue();
                         break;
                     case 4:
+                        Console.Clear();
+                        Helper.PrintTitle("Uredjivanje letova");
+                        Console.WriteLine("Prikaz postojecih letova: "); 
+                        Flight.showFlights(flights);
+                        FlightHelper.editFlight(flights);
                         break;
                     case 5:
                         break;

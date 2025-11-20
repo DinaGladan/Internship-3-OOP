@@ -36,6 +36,15 @@
             Console.WriteLine($"{Id} - {Name} - {DepartureDate} - {ArrivalDate} - {Distance} - {TimeTravel} ");
         }
 
+        public void changeDepartureDate(DateOnly departure_day_edit)
+        {
+            DepartureDate = departure_day_edit;
+        }
+        public void changeArrivalDate(DateOnly arrival_day_edit)
+        {
+            ArrivalDate = arrival_day_edit;
+        }
+
         public static void showFlights(List<Flight> flights)
         {
             foreach(Flight flight in flights)

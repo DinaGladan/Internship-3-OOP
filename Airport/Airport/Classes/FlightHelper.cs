@@ -127,5 +127,36 @@
 
             return new Flight(name, departure_day, arrival_day, distance, travel_time);
         }
+
+        public static void editFlight(List<Flight> flights)
+        {
+            var edit_flight = findById(flights);
+
+            Console.Clear();
+            Console.WriteLine("Uredjujemo let : ");
+            edit_flight.printFlight();
+            Console.WriteLine("\n");
+
+            Console.WriteLine("Unesite izbor sto zelite urediti: \na) Vrijeme polaska \nb) Vrijeme dolaska \nc) Posadu");
+            var possible_choices = new List<char>() { 'a', 'b', 'c' };
+            var choice = Helper.IsItChar(possible_choices);
+            switch (choice)
+            {
+                case 'a':
+                    Console.Write("Unesite novi datum polaska leta ");
+                    DateOnly departure_day_edit = Helper.IsValidDate();
+                    edit_flight.changeDepartureDate(departure_day_edit);
+                    break;
+                case 'b':
+                    Console.Write("Unesite novi datum dolaska leta ");
+                    DateOnly arrival_day_edit = Helper.IsValidDate();
+                    edit_flight.changeArrivalDate(arrival_day_edit);
+                    break;
+                case 'c':
+                    break;
+            }
+            Console.WriteLine("Vas let poslije uredjivaanja: ");
+            edit_flight.printFlight();;
+        }
     }
 }

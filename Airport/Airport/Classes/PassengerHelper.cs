@@ -93,7 +93,7 @@
             string passenger_surname = Helper.IsItString(Console.ReadLine());
 
             Console.Write("Unesite datum rodjenja putnika (YYYY-MM-DD) ");
-            DateOnly passenger_birth = Helper.IsValidDate();
+            DateOnly passenger_birth = Helper.IsValidBirthDate();
 
             string passenger_email;
             do
