@@ -120,6 +120,9 @@ namespace Airport
                         Helper.ReadyToContinue();
                         break;
                     case 3:
+                        Console.Clear();
+                        FlightHelper.searchFlight(flights_list);
+                        Helper.ReadyToContinue();
                         break;
                     case 4:
                         break;

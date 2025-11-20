@@ -59,22 +59,7 @@ namespace Airport.Classes
             Console.Clear();
         }
 
-        public static Flight findById(List<Flight> flights)
-        {
-            while (true)
-            {
-                Console.Write("Unesite jedan od ponudjenih IDieva: ");
-                string wanted_id = Console.ReadLine();
-                foreach (Flight flight in flights)
-                {
-                    if (flight.getID() == wanted_id)
-                    {
-                        return flight;
-                    }
-                }
-                Console.WriteLine();
-            }
-        }
+
 
         public static char IsItChar(List<char> possible_char)
         {   

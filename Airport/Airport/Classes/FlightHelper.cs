@@ -9,7 +9,7 @@
             {
                 if (flight.StandardSeats > 0 || flight.BusinessSeats > 0 || flight.VIPSeats > 0)
                 {
-                    Console.WriteLine($"{flight.Id} - {flight.Name} - {flight.DepartureDate} - {flight.ArrivalDate} - {flight.Distance} - {flight.TimeTravel} ");
+                    Console.WriteLine($"{flight.getID()} - {flight.Name} - {flight.DepartureDate} - {flight.ArrivalDate} - {flight.Distance} - {flight.TimeTravel} ");
                     avaiableFlights.Add(flight);
 
                 }
@@ -21,7 +21,7 @@
 
         public static Flight chooseFromAvailableFlights(List<Flight> availableFlights)
         {
-            Flight wanted_flight = Helper.findById(availableFlights);
+            Flight wanted_flight = findById(availableFlights);
             return wanted_flight;
         }
 
@@ -48,6 +48,63 @@
             char seat_type = Helper.IsItChar(possible_seat);
             return seat_type;
         }
+        public static Flight findById(List<Flight> flights)
+        {
+            while (true)
+            {
+                Console.Write("Unesite jedan od postojecih IDieva: ");
+                string wanted_id = Console.ReadLine();
+                foreach (Flight flight in flights)
+                {
+                    if (flight.getID() == wanted_id)
+                    {
+                        return flight;
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
 
+        public static List<Flight> findByName(List<Flight> flights)
+        {
+            bool loop = true;
+            List<Flight> wanted_names= new List<Flight>();
+            while (loop)
+            {
+                Console.Write("Unesite jedan od postojecih naziva letova: ");
+                wanted_names = new List<Flight>();
+                string wanted_name = Console.ReadLine();
+                foreach (Flight flight in flights)
+                {
+                    if (flight.Name == wanted_name)
+                    {
+                        wanted_names.Add(flight);
+                        loop = false;
+                    }
+                }
+                Console.WriteLine();
+            }
+            return wanted_names;
+        }
+        public static void searchFlight(List<Flight> flights_list)
+        {
+            Console.WriteLine("Pretraživanje letova \r\na) Po id-u \r\nb) Po nazivu");
+            var possible_char = new List<char>() { 'a', 'b' };
+            var choice = Helper.IsItChar(possible_char);
+
+            switch (choice)
+            {
+                case 'a':
+                    Console.Clear();
+                    var wanted_flight =findById(flights_list);
+                    wanted_flight.printFlight();
+                    break;
+                case 'b':
+                    Console.Clear();
+                    var wanted_flights = findByName(flights_list);
+                    Flight.showFlights(wanted_flights);
+                    break;
+            }
+        }
     }
 }

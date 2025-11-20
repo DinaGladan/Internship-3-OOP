@@ -36,6 +36,12 @@ namespace Airport.Classes
         {
             return Id;
         }
+
+        public void printFlight()
+        {
+            Console.WriteLine($"{Id} - {Name} - {DepartureDate} - {ArrivalDate} - {Distance} - {TimeTravel} ");
+        }
+
         public static void showFlights(List<Flight> flights)
         {
             foreach(Flight flight in flights)
