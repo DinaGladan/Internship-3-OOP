@@ -45,7 +45,7 @@ namespace Airport.Classes
                 return;
             }
             Flight flight_to_cancel = cancel_flights_by_name[0];
-            DateTime departure_date = flight_to_cancel.DepartureDate.ToDateTime(TimeOnly.MinValue);
+            DateTime departure_date = flight_to_cancel.DepartureDate;
             TimeSpan difference = departure_date - DateTime.Now;
             if (difference.TotalHours<24)
             {

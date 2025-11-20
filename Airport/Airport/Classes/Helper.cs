@@ -52,13 +52,13 @@ namespace Airport.Classes
                 }
             }
         }
-        public static DateOnly IsValidDate()
+        public static DateTime IsValidDate()
         {
-            DateOnly bd;
+            DateTime bd;
             while (true)
             {
                 string date = Console.ReadLine();
-                if (DateOnly.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out bd) && bd > DateOnly.FromDateTime(DateTime.Now))
+                if (DateTime.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out bd) && bd > DateTime.Now)
                     return bd;
                 else
                 {

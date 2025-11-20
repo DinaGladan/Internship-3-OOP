@@ -47,9 +47,9 @@ namespace Airport
 
                 var flights_list = new List<Flight>
                 {
-                    new Flight( "Zagreb - London", new DateOnly(2025,12,01), new DateOnly(2025,12,10), 1450, new TimeSpan(2,20,0), crew_list[0],66,20,10 ),
-                    new Flight( "Zagreb - Paris", new DateOnly(2025,12,01), new DateOnly(2025,12,10), 1450, new TimeSpan(2,20,0), crew_list[1],36,4,1 ),
-                    new Flight( "Split - Dubai", new DateOnly(2025,12,01), new DateOnly(2025,12,10), 1450, new TimeSpan(2,20,0), crew_list[2],70,18,10 ),
+                    new Flight( "Zagreb - London", new DateTime(2025,11,21,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[0],66,20,10 ),
+                    new Flight( "Zagreb - Paris", new DateTime(2025,11,22,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[1],70,4,1 ),
+                    new Flight( "Split - Dubai", new DateTime(2025,11,21,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[2],70,18,10 ),
                 };
 
                 int choice = Helper.Menu("1 - Putnici", "2 - Letovi", "3 – Avioni", "4 – Posada", "5 – Izlaz iz programa");
@@ -203,6 +203,12 @@ namespace Airport
                         Helper.ReadyToContinue();
                         break;
                     case 5:
+                        Console.Clear();
+                        Helper.PrintTitle("Brisanje letova");
+                        Console.WriteLine("Prikaz postojecih letova: ");
+                        Flight.showFlights(flights);
+                        FlightHelper.deleteFlight(flights);
+                        Helper.ReadyToContinue();
                         break;
                     case 6:
                         loop = false;

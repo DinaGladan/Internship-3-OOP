@@ -115,10 +115,10 @@ namespace Airport.Classes
             Helper.IsItString(name);
 
             Console.Write("Unesite datum polaska novog leta ");
-            DateOnly departure_day = Helper.IsValidDate();
+            DateTime departure_day = Helper.IsValidDate();
 
             Console.Write("Unesite datum dolaska novog leta ");
-            DateOnly arrival_day = Helper.IsValidDate();
+            DateTime arrival_day = Helper.IsValidDate();
 
             Console.Write("Unesite udaljenost novog leta u kilometrima ");
             double distance = Helper.IsItDouble();
@@ -153,12 +153,12 @@ namespace Airport.Classes
             {
                 case 'a':
                     Console.Write("Unesite novi datum polaska leta ");
-                    DateOnly departure_day_edit = Helper.IsValidDate();
+                    DateTime departure_day_edit = Helper.IsValidDate();
                     edit_flight.changeDepartureDate(departure_day_edit);
                     break;
                 case 'b':
                     Console.Write("Unesite novi datum dolaska leta ");
-                    DateOnly arrival_day_edit = Helper.IsValidDate();
+                    DateTime arrival_day_edit = Helper.IsValidDate();
                     edit_flight.changeArrivalDate(arrival_day_edit);
                     break;
                 case 'c':
@@ -173,6 +173,16 @@ namespace Airport.Classes
             Console.WriteLine("Vas let poslije uredjivaanja: ");
             edit_flight.printFlight();
             edit_flight.FlightCrew.showCrew();
+        }
+
+        public static void deleteFlight(List<Flight> flights)
+        {
+            var delete_flight = findById(flights);
+            while (unsatisfied_conditions(delete_flight))
+            {
+                delete_flight = findById(flights);
+            }
+            flights.Remove(delete_flight);
         }
         public static Crew WantedFlightCrew(List<Crew> crew_list)
         {
@@ -200,5 +210,16 @@ namespace Airport.Classes
                 .ToList();
         }
 
+        public static bool unsatisfied_conditions(Flight delete_f)
+        {
+            int max_seats = 100;
+            var sum_seats = delete_f.BusinessSeats + delete_f.StandardSeats + delete_f.VIPSeats;
+            if ((double)sum_seats / max_seats < 0.5)
+                return false;
+            var houers = (delete_f.DepartureDate - DateTime.Now).TotalHours;
+            if (houers >24)
+                return false;
+            return true;
+        }
     }
 }
