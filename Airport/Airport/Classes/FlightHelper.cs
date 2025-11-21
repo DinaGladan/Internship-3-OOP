@@ -56,6 +56,7 @@ namespace Airport.Classes
         {
             while (true)
             {
+                Flight.showFlights(flights);
                 Console.Write("Unesite jedan od postojecih IDieva: ");
                 string wanted_id = Console.ReadLine();
                 foreach (Flight flight in flights)
@@ -75,6 +76,7 @@ namespace Airport.Classes
             List<Flight> wanted_names= new List<Flight>();
             while (loop)
             {
+                Flight.showFlights(flights);
                 Console.Write("Unesite jedan od postojecih naziva letova: ");
                 wanted_names = new List<Flight>();
                 string wanted_name = Console.ReadLine();

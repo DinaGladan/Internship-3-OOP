@@ -22,6 +22,19 @@
             Console.WriteLine($"{Id} - {Name} - {ProductionYear} - {NumberOfFlights}");
         }
 
+        public static void showPlanes(List<Plane> planes)
+        {
+            foreach (Plane plane in planes)
+            {
+                Console.WriteLine($"{plane.Id} - {plane.Name} - {plane.ProductionYear} - {plane.NumberOfFlights}");
+            }
+        }
+
+        public string getID()
+        {
+            return Id;
+        }
+
         public static void addPlane(List<Plane>planes)
         {
             Console.Write("Unesite naziv novog aviona ");
@@ -50,6 +63,26 @@
                 {SeatType.VIP, VIP_seats },
             });
             planes.Add(new_plane);
+        }
+        public static void searchPlane(List<Plane> planes)
+        {
+            Console.WriteLine("Pretraživanje aviona \r\na) Po id-u \r\nb) Po nazivu");
+            var possible_char = new List<char>() { 'a', 'b' };
+            var choice = Helper.IsItChar(possible_char);
+
+            switch (choice)
+            {
+                case 'a':
+                    Console.Clear();
+                    var wanted_plane = PlaneHelper.findById(planes);
+                    wanted_plane.printPlane();
+                    break;
+                case 'b':
+                    Console.Clear();
+                    var wanted_planes = PlaneHelper.findByName(planes);
+                    Plane.showPlanes(wanted_planes);
+                    break;
+            }
         }
     }
    

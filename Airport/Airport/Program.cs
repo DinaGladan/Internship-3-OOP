@@ -341,7 +341,8 @@ namespace Airport
                         break;
                     case 3:
                         Console.Clear();
-                        
+                        Helper.PrintTitle("Pretrazivanje aviona");
+                        Plane.searchPlane(planes);
                         Helper.ReadyToContinue();
                         break;
                     case 4:
