@@ -70,19 +70,40 @@ namespace Airport
                     } ),
             };
 
-            var flights_list = new List<Flight>
-            {
-                    new Flight( "Zagreb - London", new DateTime(2025,11,21,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[0],66,20,10 ),
-                    new Flight( "Zagreb - Paris", new DateTime(2025,11,22,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[1],70,4,1 ),
-                    new Flight( "Split - Dubai", new DateTime(2025,11,21,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[2],70,18,10 ),
-            };
-
             var planes_list = new List<Plane>
             {
-                new Plane("Avion_1", 2013,223),
-                new Plane("Avion_2", 2014,253),
-                new Plane("Avion_3", 2012,123),
+                new Plane("Avion_1", 2013,223, new Dictionary<SeatType, int>
+                {
+                    {SeatType.Standard,70 },
+                    { SeatType.Business, 20},
+                    { SeatType.VIP,10},
+                }),
+                new Plane("Avion_2", 2014,253, new Dictionary<SeatType, int>
+                {
+                    {SeatType.Standard,70 },
+                    { SeatType.Business, 20},
+                    { SeatType.VIP,10},
+                }),
+                new Plane("Avion_3", 2012,123, new Dictionary<SeatType, int>
+                {
+                    {SeatType.Standard,70 },
+                    { SeatType.Business, 20},
+                    { SeatType.VIP,10},
+                }),
+                new Plane("Avion_4", 2012,123, new Dictionary<SeatType, int>
+                {
+                    {SeatType.Standard,70 },
+                    { SeatType.Business, 20},
+                    { SeatType.VIP,10},
+                }),
 
+            };
+
+            var flights_list = new List<Flight>
+            {
+                    new Flight( "Zagreb - London", new DateTime(2025,11,21,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[0], planes_list[0], 70,20,10),
+                    new Flight( "Zagreb - Paris", new DateTime(2025,11,22,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[1],planes_list[1],45,12,10),
+                    new Flight( "Split - Dubai", new DateTime(2025,11,21,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[2],planes_list[2],67,6,7),
             };
 
             Helper.PrintTitle("glavni izbornik");
@@ -99,7 +120,7 @@ namespace Airport
                         break;
                     case 2:
                         Console.Clear();
-                        FlightsChoices(flights_list, crew_list);
+                        FlightsChoices(flights_list, crew_list, planes_list);
                         Helper.PrintTitle("glavni izbornik");
                         break;
                     case 3:
@@ -202,7 +223,7 @@ namespace Airport
             }
         }
 
-        static void FlightsChoices(List<Flight> flights, List<Crew>crews)
+        static void FlightsChoices(List<Flight> flights, List<Crew>crews, List<Plane> planes)
         {
             bool loop = true;
             while(loop)
@@ -220,7 +241,7 @@ namespace Airport
                     case 2:
                         Console.Clear();
                         Helper.PrintTitle("Dodavanje novog leta");
-                        Flight new_flight = FlightHelper.CreateNewFlight(crews);
+                        Flight new_flight = FlightHelper.CreateNewFlight(crews,planes, flights);
                         flights.Add(new_flight);
                         Helper.ReadyToContinue();
                         break;
@@ -315,7 +336,7 @@ namespace Airport
                     case 2:
                         Console.Clear();
                         Helper.PrintTitle("Dodavanje novog aviona");
-                        
+                        Plane.addPlane(planes);
                         Helper.ReadyToContinue();
                         break;
                     case 3:
@@ -324,6 +345,9 @@ namespace Airport
                         Helper.ReadyToContinue();
                         break;
                     case 4:
+                        Console.Clear();
+                        break;
+                    case 5:
                         loop = false;
                         Console.Clear();
                         break;

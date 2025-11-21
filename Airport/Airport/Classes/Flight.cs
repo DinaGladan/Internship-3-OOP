@@ -9,12 +9,12 @@
         public double Distance { get; set; }
         public TimeSpan TimeTravel { get; set; }
         public Crew FlightCrew {  get; set; }
+        public Plane Plane { get; set; }
+        public int TakenStandardSeats;
+        public int TakenBusinessSeats;
+        public int TakenVIPSeats;
 
-        public int StandardSeats { get; set; }
-        public int BusinessSeats { get; set; }
-        public int VIPSeats {  get; set; }
-
-        public Flight(string name, DateTime departureDay, DateTime arrivalDate, double distance, TimeSpan timeTravel, Crew flightCrew, int standardSeats = 70, int businessSeats = 20, int vipSeats = 10)
+        public Flight(string name, DateTime departureDay, DateTime arrivalDate, double distance, TimeSpan timeTravel, Crew flightCrew, Plane plane, int takenStandardSeats = 2, int takenBusinessSeats = 2, int takenVIPSeats=0)
         {
             Id = Helper.generateID();
             Name = name;
@@ -23,9 +23,10 @@
             Distance = distance;
             TimeTravel = timeTravel;
             FlightCrew = flightCrew;
-            StandardSeats = standardSeats;
-            BusinessSeats = businessSeats;
-            VIPSeats = vipSeats;
+            Plane = plane;
+            TakenStandardSeats = takenStandardSeats;
+            TakenBusinessSeats = takenBusinessSeats;
+            TakenVIPSeats = takenVIPSeats;
         }
 
         public string getID()

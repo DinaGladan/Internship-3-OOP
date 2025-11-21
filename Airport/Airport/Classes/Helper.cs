@@ -134,5 +134,37 @@ namespace Airport.Classes
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
             return textInfo.ToTitleCase(word);
         }
+
+        public static int IsValidYear()
+        {
+            int number;
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (int.TryParse(input, out number) && (number > 0) && (number < (int)DateTime.Now.Year))
+                    return number;
+                else
+                {
+                    Console.WriteLine("Niste unijeli valjanu godinu: ");
+                    Console.Write("Unesite godinu: ");
+                }
+            }
+        }
+
+        public static int IsPositive()
+        {
+            int number;
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (int.TryParse(input, out number) && (number > 0))
+                    return number;
+                else
+                {
+                    Console.WriteLine("Niste unijeli valjani broj: ");
+                    Console.Write("Unesite pozitivan broj: ");
+                }
+            }
+        }
     }
 }
