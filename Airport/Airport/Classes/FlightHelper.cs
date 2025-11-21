@@ -8,7 +8,10 @@ namespace Airport.Classes
             List<Flight> avaiableFlights = new List<Flight>();
             foreach (Flight flight in flights)
             {
-                if (flight.StandardSeats > 0 || flight.BusinessSeats > 0 || flight.VIPSeats > 0)
+                var standard_free = flight.Plane.Seats[SeatType.Standard] - flight.TakenStandardSeats;
+                var business_free = flight.Plane.Seats[SeatType.Business] - flight.TakenBusinessSeats;
+                var VIP_free = flight.Plane.Seats[SeatType.VIP] - flight.TakenVIPSeats;
+                if (standard_free > 0 || business_free > 0 || VIP_free > 0)
                 {
                     Console.WriteLine($"{flight.getID()} - {flight.Name} - {flight.DepartureDate} - {flight.ArrivalDate} - {flight.Distance} - {flight.TimeTravel} ");
                     avaiableFlights.Add(flight);
@@ -31,19 +34,19 @@ namespace Airport.Classes
             var possible_seat = new List<char>();
 
             Console.WriteLine("Dostupna kategorija (Unesite S za standard, B za business ili V za VIP) : ");
-            if ((70 - wanted_flight.StandardSeats) > 0)
+            if ((wanted_flight.Plane.Seats[SeatType.Standard]- wanted_flight.TakenStandardSeats) > 0)
             {
-                Console.WriteLine($"Standardnih {70 - wanted_flight.StandardSeats}");
+                Console.WriteLine($"Standardnih {wanted_flight.Plane.Seats[SeatType.Standard] - wanted_flight.TakenStandardSeats}");
                 possible_seat.Add('s');
             }
-            if ((20 - wanted_flight.BusinessSeats) > 0)
+            if ((wanted_flight.Plane.Seats[SeatType.Business] - wanted_flight.TakenBusinessSeats) > 0)
             {
-                Console.WriteLine($"Busines {20 - wanted_flight.BusinessSeats}");
+                Console.WriteLine($"Busines {wanted_flight.Plane.Seats[SeatType.Business] - wanted_flight.TakenBusinessSeats}");
                 possible_seat.Add('b');
             }
-            if ((10 - wanted_flight.VIPSeats) > 0)
+            if ((wanted_flight.Plane.Seats[SeatType.VIP] - wanted_flight.TakenVIPSeats) > 0)
             {
-                Console.WriteLine($"VIP {10 - wanted_flight.VIPSeats}");
+                Console.WriteLine($"VIP {wanted_flight.Plane.Seats[SeatType.VIP] - wanted_flight.TakenVIPSeats}");
                 possible_seat.Add('v');
             }
             char seat_type = Helper.IsItChar(possible_seat);
@@ -53,6 +56,7 @@ namespace Airport.Classes
         {
             while (true)
             {
+                Flight.showFlights(flights);
                 Console.Write("Unesite jedan od postojecih IDieva: ");
                 string wanted_id = Console.ReadLine();
                 foreach (Flight flight in flights)
@@ -72,6 +76,7 @@ namespace Airport.Classes
             List<Flight> wanted_names= new List<Flight>();
             while (loop)
             {
+                Flight.showFlights(flights);
                 Console.Write("Unesite jedan od postojecih naziva letova: ");
                 wanted_names = new List<Flight>();
                 string wanted_name = Console.ReadLine();
@@ -108,7 +113,7 @@ namespace Airport.Classes
             }
         }
 
-        public static Flight CreateNewFlight(List<Crew> crew_list) // dodat avion
+        public static Flight CreateNewFlight(List<Crew> crew_list, List<Plane> planes, List<Flight> flights) 
         {
             Console.Write("Unesite naziv novog leta ");
             string name = Console.ReadLine();
@@ -125,16 +130,29 @@ namespace Airport.Classes
            
             Console.Write("Unesite trajanje leta. Unosite sate i minute (sekunde nisu obvezne):");
             TimeSpan travel_time = Helper.IsItTimeSpan();
+
+
+            Plane plane;
+            do
+            {
+                var available_plane = GetFreePlanes(planes, flights);
+                Console.Clear();
+                Console.WriteLine("Unesite zeljeni avion (izaberite od postojecih):");
+                plane = WantedAirplane(available_plane);
+            }
+            while (plane == null);
+
             Crew flight_crew;
             do
             {
+                var available_crew = GetFreeCrews(crew_list, flights);
                 Console.Clear();
                 Console.WriteLine("Unesite zeljenu posadu novog leta (izaberite od postojecih):");
-                flight_crew = WantedFlightCrew(crew_list);
+                flight_crew = WantedFlightCrew(available_crew);
             }
             while (flight_crew == null);
 
-            return new Flight(name, departure_day, arrival_day, distance, travel_time, flight_crew);
+            return new Flight(name, departure_day, arrival_day, distance, travel_time, flight_crew, plane);
         }
 
         public static void editFlight(List<Flight> flights, List<Crew>crews)
@@ -180,6 +198,7 @@ namespace Airport.Classes
             var delete_flight = findById(flights);
             while (unsatisfied_conditions(delete_flight))
             {
+                Console.WriteLine("Broj putnika na tom letu treba bit manji od 50% i vrijeme polaska treba bit vise od 24h");
                 delete_flight = findById(flights);
             }
             flights.Remove(delete_flight);
@@ -203,6 +222,34 @@ namespace Airport.Classes
             return null;
 
         }
+
+        public static Plane WantedAirplane(List<Plane> planes)
+        {
+            foreach (var plane in planes)
+            {
+                plane.printPlane();
+            }
+            string wanted = Console.ReadLine();
+            wanted = Helper.IsItString(wanted);
+            foreach (var plane in planes)
+            {
+                if (plane.Name == wanted)
+                {
+                    Plane wanted_plane = plane;
+                    return wanted_plane;
+                }
+            }
+            return null;
+
+        }
+
+        public static List<Plane> GetFreePlanes(List<Plane> allPlanes, List<Flight> allFlights)
+        {
+            return allPlanes
+                .Where(plane => allFlights.All(flight => flight.Plane != plane))
+                .ToList();
+        }
+
         public static List<Crew> GetFreeCrews(List<Crew> allCrews, List<Flight> allFlights)
         {
             return allCrews
@@ -212,14 +259,15 @@ namespace Airport.Classes
 
         public static bool unsatisfied_conditions(Flight delete_f)
         {
-            int max_seats = 100;
-            var sum_seats = delete_f.BusinessSeats + delete_f.StandardSeats + delete_f.VIPSeats;
-            if ((double)sum_seats / max_seats < 0.5)
-                return false;
+            var sum_seats = delete_f.Plane.Seats.Values.Sum();
+            decimal taken_seats = delete_f.TakenStandardSeats + delete_f.TakenBusinessSeats + delete_f.TakenVIPSeats;
+            decimal percent = taken_seats / (decimal)sum_seats;
+            if (percent > (decimal)0.5)
+                return true;
             var houers = (delete_f.DepartureDate - DateTime.Now).TotalHours;
-            if (houers >24)
-                return false;
-            return true;
+            if (houers < 24)
+                return true;
+            return false;
         }
     }
 }
