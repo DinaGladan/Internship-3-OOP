@@ -101,9 +101,9 @@ namespace Airport
 
             var flights_list = new List<Flight>
             {
-                    new Flight( "Zagreb - London", new DateTime(2025,11,21,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[0], planes_list[0], 70,20,10),
-                    new Flight( "Zagreb - Paris", new DateTime(2025,11,22,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[1],planes_list[1],45,12,10),
-                    new Flight( "Split - Dubai", new DateTime(2025,11,21,12,20,0), new DateTime(2025,12,10,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[2],planes_list[2],67,6,7),
+                    new Flight( "Zagreb - London", new DateTime(2025,12,26,12,20,0), new DateTime(2025,12,30,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[0], planes_list[0], 70,20,10),
+                    new Flight( "Zagreb - Paris", new DateTime(2025,12,25,12,20,0), new DateTime(2025,12,30,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[1],planes_list[1],15,12,10),
+                    new Flight( "Split - Dubai", new DateTime(2025,12,22,12,20,0), new DateTime(2025,12,30,16,12,0), 1450, new TimeSpan(2,20,0), crew_list[2],planes_list[2],67,6,7),
             };
 
             Helper.PrintTitle("glavni izbornik");
@@ -186,20 +186,23 @@ namespace Airport
                 {
                     case 1:
                         Console.Clear();
-                        Helper.PrintTitle("Prikaz svih letova"); //mozda treba samo od tog putnika??
-                        Flight.showFlights(flights_list);
+                        Helper.PrintTitle("Prikaz korisnikovih letova");
+                        var passenger_tickets = logged.PassengerTickets;
+                        foreach(var ticket in passenger_tickets)
+                            ticket.Flight.printFlight();
                         Helper.ReadyToContinue();
                         break;
                     case 2:
                         Console.Clear();
                         Helper.PrintTitle("Odabir leta od dostupnih");
-                        var available_flights = FlightHelper.showAvailableFlights(flights_list);
+
+                        var available_flights = FlightHelper.showAvailableFlights(flights_list);;
                         var wanted_flight = FlightHelper.chooseFromAvailableFlights(available_flights);
                         var wanted_seat = FlightHelper.chooseAvailableSeat(wanted_flight);
                         Ticket new_ticket = new Ticket(logged, wanted_flight, wanted_seat);
                         logged.PassengerTickets.Add(new_ticket);
-                        Console.Clear(); 
-                        logged.printTickets(); //dodat da se smanji za jedan poslije odabira sjedala i da se ne moze vec odabrani let opet uzet?
+                        Console.Clear();
+                        logged.printTickets();
                         Helper.ReadyToContinue();
                         break;
                     case 3:
@@ -242,7 +245,8 @@ namespace Airport
                         Console.Clear();
                         Helper.PrintTitle("Dodavanje novog leta");
                         Flight new_flight = FlightHelper.CreateNewFlight(crews,planes, flights);
-                        flights.Add(new_flight);
+                        if(Helper.Confirm())
+                            flights.Add(new_flight);
                         Helper.ReadyToContinue();
                         break;
                     case 3:
@@ -255,7 +259,6 @@ namespace Airport
                         Console.Clear();
                         Helper.PrintTitle("Uredjivanje letova");
                         Console.WriteLine("Prikaz postojecih letova: "); 
-                        Flight.showFlights(flights);
                         FlightHelper.editFlight(flights, crews);
                         Helper.ReadyToContinue();
                         break;
@@ -263,7 +266,6 @@ namespace Airport
                         Console.Clear();
                         Helper.PrintTitle("Brisanje letova");
                         Console.WriteLine("Prikaz postojecih letova: ");
-                        Flight.showFlights(flights);
                         FlightHelper.deleteFlight(flights);
                         Helper.ReadyToContinue();
                         break;
@@ -297,7 +299,8 @@ namespace Airport
                         Console.Clear();
                         Helper.PrintTitle("Kreiranje nove posade");
                         var new_crew = Crew.createNewCrew(pilots, copilots, stewardesses, crew_list);
-                        crew_list.Add(new_crew);
+                        if(Helper.Confirm())
+                            crew_list.Add(new_crew);
                         Helper.ReadyToContinue();
                         break;
                     case 3:

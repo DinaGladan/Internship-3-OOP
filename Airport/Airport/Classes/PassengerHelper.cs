@@ -107,7 +107,8 @@
 
             var new_passenger = new Passenger(passenger_name, passenger_surname, passenger_birth, passenger_email, passenger_password);
 
-            passengers.Add(new_passenger);
+            if(Helper.Confirm())
+                passengers.Add(new_passenger);
             Console.Clear();
             return passengers;
         }

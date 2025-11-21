@@ -1,6 +1,6 @@
 ﻿namespace Airport.Classes
 {
-    public class Flight
+    public class Flight :BaseEntity
     {
         private string Id {  get; set; }
         public string Name { get; set; }
@@ -14,7 +14,7 @@
         public int TakenBusinessSeats;
         public int TakenVIPSeats;
 
-        public Flight(string name, DateTime departureDay, DateTime arrivalDate, double distance, TimeSpan timeTravel, Crew flightCrew, Plane plane, int takenStandardSeats = 2, int takenBusinessSeats = 2, int takenVIPSeats=0)
+        public Flight(string name, DateTime departureDay, DateTime arrivalDate, double distance, TimeSpan timeTravel, Crew flightCrew, Plane plane, int takenStandardSeats = 2, int takenBusinessSeats = 2, int takenVIPSeats=0) : base()
         {
             Id = Helper.generateID();
             Name = name;
@@ -27,6 +27,21 @@
             TakenStandardSeats = takenStandardSeats;
             TakenBusinessSeats = takenBusinessSeats;
             TakenVIPSeats = takenVIPSeats;
+        }
+
+        public void UpdateFlight(string name, DateTime departureDay, DateTime arrivalDate, double distance, TimeSpan timeTravel, Crew flightCrew, Plane plane, int takenStandardSeats = 2, int takenBusinessSeats = 2, int takenVIPSeats = 0)
+        {
+            Name = name;
+            DepartureDate = departureDay;
+            ArrivalDate = arrivalDate;
+            Distance = distance;
+            TimeTravel = timeTravel;
+            FlightCrew = flightCrew;
+            Plane = plane;
+            TakenStandardSeats = takenStandardSeats;
+            TakenBusinessSeats = takenBusinessSeats;
+            TakenVIPSeats = takenVIPSeats;
+            UpdateIt();
         }
 
         public string getID()

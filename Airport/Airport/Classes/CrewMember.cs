@@ -1,6 +1,6 @@
 ﻿namespace Airport.Classes
 {
-    public abstract class CrewMember
+    public abstract class CrewMember : BaseEntity
     {
         private string Id { get; set; }
         public string Name { get; set; }    
@@ -9,13 +9,21 @@
         public string Gender { get; set;}
         public DateOnly BirthDate { get; set; }
 
-        public CrewMember(string name, string surname, string gender, DateOnly birthDate)
+        public CrewMember(string name, string surname, string gender, DateOnly birthDate) : base()
         {
             Id = Helper.generateID();
             Name = name;
             Surname = surname;
             Gender = gender;
             BirthDate = birthDate;
+        }
+        public void UpdateCrewMember(string name, string surname, string gender, DateOnly birthDate)
+        {
+            Name = name;
+            Surname = surname;
+            Gender = gender;
+            BirthDate = birthDate;
+            UpdateIt();
         }
         public void printMember()
         {

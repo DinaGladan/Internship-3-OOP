@@ -1,6 +1,6 @@
 ﻿namespace Airport.Classes
 {
-    public class Plane
+    public class Plane :BaseEntity
     {
         private string Id { get; set; }
         public string Name { get; set; }
@@ -8,13 +8,22 @@
         public int NumberOfFlights { get; set; }
         public Dictionary<SeatType, int> Seats { get; set; }
 
-        public Plane(string name, int productionYear, int numberOfFlights, Dictionary<SeatType,int> seats)
+        public Plane(string name, int productionYear, int numberOfFlights, Dictionary<SeatType,int> seats) : base()
         {
             Id = Helper.generateID();
             Name = name;
             ProductionYear = productionYear;
             NumberOfFlights = numberOfFlights;
             Seats = seats;
+        }
+
+        public void UpdatePlane(string name, int productionYear, int numberOfFlights, Dictionary<SeatType, int> seats)
+        {
+            Name = name;
+            ProductionYear = productionYear;
+            NumberOfFlights = numberOfFlights;
+            Seats = seats;
+            UpdateIt();
         }
 
         public void printPlane()
@@ -62,7 +71,8 @@
                 {SeatType.Business, business_seats },
                 {SeatType.VIP, VIP_seats },
             });
-            planes.Add(new_plane);
+            if(Helper.Confirm())
+                planes.Add(new_plane);
         }
         public static void searchPlane(List<Plane> planes)
         {
@@ -96,12 +106,14 @@
                 case 'a':
                     Console.Clear();
                     var delete_plane = PlaneHelper.findById(planes);
-                    planes.Remove(delete_plane);
+                    if(Helper.Confirm())
+                        planes.Remove(delete_plane);
                     break;
                 case 'b':
                     Console.Clear();
                     var wanted_planes = PlaneHelper.findByName(planes);
-                    planes.RemoveAll(p => wanted_planes.Contains(p));
+                    if(Helper.Confirm())
+                        planes.RemoveAll(p => wanted_planes.Contains(p));
                     break;
             }
             

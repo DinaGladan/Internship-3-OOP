@@ -1,14 +1,20 @@
 ﻿using Airport.Classes.Members;
 namespace Airport.Classes
 {
-    public class Crew
+    public class Crew : BaseEntity
     {
         public string CrewName { get; set; }
         public List<CrewMember> CrewMembers { get; set; }
 
-        public Crew(string crewName, List<CrewMember> crewMembers) {
+        public Crew(string crewName, List<CrewMember> crewMembers) : base(){
             CrewName = crewName;
             CrewMembers = crewMembers;
+        }
+        public void UpdateCrew(string crewName, List<CrewMember> crewMembers) 
+        {
+            CrewName = crewName;
+            CrewMembers = crewMembers;
+            UpdateIt();
         }
 
         public void showCrew()
@@ -29,7 +35,7 @@ namespace Airport.Classes
             do
             {
                 Console.Clear();
-                Console.WriteLine("Unesite zeljenu posadu (izaberite od mogucih): ");
+                Console.WriteLine("Unesite naziv zeljene posade (izaberite od mogucih): ");
                 new_crew = FlightHelper.WantedFlightCrew(free_crews);
             }
             while (new_crew == null);
@@ -40,7 +46,7 @@ namespace Airport.Classes
         {
             Console.Write("Unesite naziv nove posade ");
             string crew_name = Console.ReadLine();
-            Helper.IsItString(crew_name);
+            crew_name = Helper.IsItString(crew_name);
 
             var members = new List<CrewMember>();
             var free_pilots = CrewHelper.GetFreePilots(crews, pilots);

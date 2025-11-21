@@ -101,7 +101,8 @@ namespace Airport.Classes
                     DateOnly pilot_birth = Helper.IsValidBirthDate();
 
                     var new_pilot = new Pilot(pilot_name,pilot_surname,pilot_gender,pilot_birth);
-                    pilots.Add(new_pilot);
+                    if(Helper.Confirm())
+                        pilots.Add(new_pilot);
 
                     Console.WriteLine("\nPiloti u sustavu: ");
                     foreach (var pilot in pilots)
@@ -125,7 +126,8 @@ namespace Airport.Classes
                     DateOnly copilot_birth = Helper.IsValidBirthDate();
 
                     var new_copilot = new CoPilot(copilot_name, copilot_surname, copilot_gender, copilot_birth);
-                    copilots.Add(new_copilot);
+                    if(Helper.Confirm())
+                        copilots.Add(new_copilot);
 
                     Console.WriteLine("\nKopiloti u sustavu:");
                     foreach (var copilot in copilots)
@@ -149,7 +151,8 @@ namespace Airport.Classes
                     DateOnly stew_birth = Helper.IsValidBirthDate();
 
                     var new_stew = new Stewardess(stew_name, stew_surname, stew_gender, stew_birth);
-                    stewardesses.Add(new_stew);
+                    if(Helper.Confirm())
+                        stewardesses.Add(new_stew);
 
                     Console.WriteLine("\nStjuardese u sustavu:");
                     foreach (var stew in stewardesses)

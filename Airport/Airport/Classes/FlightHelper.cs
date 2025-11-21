@@ -13,7 +13,6 @@ namespace Airport.Classes
                 var VIP_free = flight.Plane.Seats[SeatType.VIP] - flight.TakenVIPSeats;
                 if (standard_free > 0 || business_free > 0 || VIP_free > 0)
                 {
-                    Console.WriteLine($"{flight.getID()} - {flight.Name} - {flight.DepartureDate} - {flight.ArrivalDate} - {flight.Distance} - {flight.TimeTravel} ");
                     avaiableFlights.Add(flight);
 
                 }
@@ -50,6 +49,14 @@ namespace Airport.Classes
                 possible_seat.Add('v');
             }
             char seat_type = Helper.IsItChar(possible_seat);
+
+           if(seat_type == 's')
+                wanted_flight.TakenStandardSeats += 1;
+           else if(seat_type =='b')
+                wanted_flight.TakenBusinessSeats += 1;
+           else if (seat_type =='v')
+                wanted_flight.TakenVIPSeats += 1;
+
             return seat_type;
         }
         public static Flight findById(List<Flight> flights)
@@ -76,7 +83,6 @@ namespace Airport.Classes
             List<Flight> wanted_names= new List<Flight>();
             while (loop)
             {
-                Flight.showFlights(flights);
                 Console.Write("Unesite jedan od postojecih naziva letova: ");
                 wanted_names = new List<Flight>();
                 string wanted_name = Console.ReadLine();
@@ -88,6 +94,8 @@ namespace Airport.Classes
                         loop = false;
                     }
                 }
+                if (String.IsNullOrEmpty(wanted_name))
+                    break;
                 Console.WriteLine();
             }
             return wanted_names;
@@ -107,6 +115,7 @@ namespace Airport.Classes
                     break;
                 case 'b':
                     Console.Clear();
+                    Flight.showFlights(flights_list);
                     var wanted_flights = findByName(flights_list);
                     Flight.showFlights(wanted_flights);
                     break;
@@ -120,10 +129,10 @@ namespace Airport.Classes
             Helper.IsItString(name);
 
             Console.Write("Unesite datum polaska novog leta ");
-            DateTime departure_day = Helper.IsValidDate();
+            DateTime departure_day = Helper.IsValidDateAndTime();
 
             Console.Write("Unesite datum dolaska novog leta ");
-            DateTime arrival_day = Helper.IsValidDate();
+            DateTime arrival_day = Helper.IsValidDateAndTime();
 
             Console.Write("Unesite udaljenost novog leta u kilometrima ");
             double distance = Helper.IsItDouble();
@@ -137,7 +146,7 @@ namespace Airport.Classes
             {
                 var available_plane = GetFreePlanes(planes, flights);
                 Console.Clear();
-                Console.WriteLine("Unesite zeljeni avion (izaberite od postojecih):");
+                Console.WriteLine("Unesite naziv zeljenog aviona (izaberite od postojecih):");
                 plane = WantedAirplane(available_plane);
             }
             while (plane == null);
@@ -147,7 +156,7 @@ namespace Airport.Classes
             {
                 var available_crew = GetFreeCrews(crew_list, flights);
                 Console.Clear();
-                Console.WriteLine("Unesite zeljenu posadu novog leta (izaberite od postojecih):");
+                Console.WriteLine("Unesite naziv zeljene posade novog leta (izaberite od postojecih):");
                 flight_crew = WantedFlightCrew(available_crew);
             }
             while (flight_crew == null);
@@ -171,13 +180,21 @@ namespace Airport.Classes
             {
                 case 'a':
                     Console.Write("Unesite novi datum polaska leta ");
-                    DateTime departure_day_edit = Helper.IsValidDate();
-                    edit_flight.changeDepartureDate(departure_day_edit);
+                    DateTime departure_day_edit = Helper.IsValidDateAndTime();
+                    if (Helper.Confirm())
+                    {
+                        edit_flight.changeDepartureDate(departure_day_edit);
+                        edit_flight.UpdateIt();
+                    }
                     break;
                 case 'b':
                     Console.Write("Unesite novi datum dolaska leta ");
-                    DateTime arrival_day_edit = Helper.IsValidDate();
-                    edit_flight.changeArrivalDate(arrival_day_edit);
+                    DateTime arrival_day_edit = Helper.IsValidDateAndTime();
+                    if (Helper.Confirm())
+                    {
+                        edit_flight.UpdateIt();
+                        edit_flight.changeArrivalDate(arrival_day_edit);
+                    }
                     break;
                 case 'c':
                     Console.WriteLine("Posada vaseg leta: ");
@@ -185,9 +202,14 @@ namespace Airport.Classes
                     crew_to_edit.showCrew();
                     Helper.ReadyToContinue();
                     Crew new_crew = Crew.changeCrew(crew_to_edit, crews, flights);
-                    edit_flight.FlightCrew = new_crew;;
+                    if (Helper.Confirm())
+                    {
+                        edit_flight.UpdateIt();
+                        edit_flight.FlightCrew = new_crew;
+                    }
                     break;
             }
+            Console.Clear();
             Console.WriteLine("Vas let poslije uredjivaanja: ");
             edit_flight.printFlight();
             edit_flight.FlightCrew.showCrew();
@@ -198,10 +220,12 @@ namespace Airport.Classes
             var delete_flight = findById(flights);
             while (unsatisfied_conditions(delete_flight))
             {
+                Console.Clear();
                 Console.WriteLine("Broj putnika na tom letu treba bit manji od 50% i vrijeme polaska treba bit vise od 24h");
                 delete_flight = findById(flights);
             }
-            flights.Remove(delete_flight);
+            if(Helper.Confirm())
+                flights.Remove(delete_flight);
         }
         public static Crew WantedFlightCrew(List<Crew> crew_list)
         {

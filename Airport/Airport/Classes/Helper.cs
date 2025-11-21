@@ -67,6 +67,23 @@ namespace Airport.Classes
                 }
             }
         }
+
+        public static DateTime IsValidDateAndTime()
+        {
+            DateTime bd;
+            while (true)
+            {
+                string date = Console.ReadLine();
+                if (DateTime.TryParseExact(date, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out bd) && bd > DateTime.Now)
+                    return bd;
+                else
+                {
+                    Console.WriteLine("Niste unijeli datum u ispravnom formatu ili ste unijeli prenisku godinu ");
+                    Console.Write("Unesite datum i vrijeme (YYYY-MM-DD HH:mm) ");
+                }
+            }
+        }
+
         public static void ReadyToContinue()
         {
             Console.WriteLine("\nPritisnite enter za nastavak ");
@@ -165,6 +182,20 @@ namespace Airport.Classes
                     Console.Write("Unesite pozitivan broj: ");
                 }
             }
+        }
+
+        public static bool Confirm()
+        {
+            Console.WriteLine("Jeste li sigurni da zelite nastavit s promjenom (Unesite da ako zelite)? ");
+            var answer = Console.ReadLine();
+            if (answer == "da")
+            {
+                Console.WriteLine("Uspjesno odradjena akcija! ");
+                return true;
+            }
+            Console.WriteLine("Akcija prekinuta! ");
+            return false;
+
         }
     }
 }
