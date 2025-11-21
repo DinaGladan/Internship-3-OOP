@@ -84,6 +84,28 @@
                     break;
             }
         }
+
+        public static void deletePlane(List<Plane> planes)
+        {
+            Console.WriteLine("Brisanje aviona \r\na) Po id-u \r\nb) Po nazivu");
+            var possible_char = new List<char>() { 'a', 'b' };
+            var choice = Helper.IsItChar(possible_char);
+
+            switch (choice)
+            {
+                case 'a':
+                    Console.Clear();
+                    var delete_plane = PlaneHelper.findById(planes);
+                    planes.Remove(delete_plane);
+                    break;
+                case 'b':
+                    Console.Clear();
+                    var wanted_planes = PlaneHelper.findByName(planes);
+                    planes.RemoveAll(p => wanted_planes.Contains(p));
+                    break;
+            }
+            
+        }
     }
    
 }

@@ -347,6 +347,11 @@ namespace Airport
                         break;
                     case 4:
                         Console.Clear();
+                        Helper.PrintTitle("Brisanje aviona");
+                        Console.WriteLine("Prikaz postojecih aviona: ");
+                        Plane.showPlanes(planes);
+                        Plane.deletePlane(planes);
+                        Helper.ReadyToContinue();
                         break;
                     case 5:
                         loop = false;
